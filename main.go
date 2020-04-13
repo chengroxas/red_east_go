@@ -1,17 +1,37 @@
 package main
 
 import (
+	// "fmt"
 	"red-east/config"
+
+	"log"
+	. "red-east/utils"
+
+	// "reflect"
+	"red-east/dao/database"
 	"red-east/utils/logging"
 )
 
 func main() {
-	//获取配置
-	err := config.InitConfig()
+	//先获取配置
+	Init()
+	Logger.Info("start application....")
+}
+
+func Init() {
+	var err error
+	Config, err = config.InitConfig()
 	if err != nil {
+		log.Fatalln("init config false")
 	}
-	//日志，可能需要输入到某个文件中
-	logger := logging.InitLogger()
-	logger.Info("hello world")
-	//db连接
+	Logger = logging.InitLogger()
+	if err != nil {
+		log.Fatalln("init logger false")
+	}
+
+	DB, err = mysql.InitMySql()
+	if err != nil {
+		Logger.Error("init database false", err.Error())
+	}
+	defer DB.Close()
 }

@@ -3,8 +3,9 @@ module red-east
 go 1.13
 
 require (
-	github.com/gin-gonic/gin v1.6.2 // indirect
-	github.com/go-redis/redis v6.15.7+incompatible
 	github.com/jinzhu/gorm v1.9.12
+	github.com/lestrrat-go/file-rotatelogs v2.3.0+incompatible
+	github.com/lestrrat-go/strftime v1.0.1 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.2.8
 )

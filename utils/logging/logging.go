@@ -2,39 +2,73 @@ package logging
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"os"
+	"red-east/config"
+	"time"
+
+	"github.com/lestrrat-go/file-rotatelogs"
 )
 
-type Logger struct {
+type NLogger struct {
 	info   *log.Logger
 	errors *log.Logger
 	debug  *log.Logger
 	waring *log.Logger
 }
 
-func InitLogger() Logger {
+func InitLogger() NLogger {
+	//获取配置，因为在同一个utils，不能直接引用
+	conf, _ := config.InitConfig()
+	logConfig := conf.Logging
 	flags := log.Ldate | log.LstdFlags | log.Lshortfile
-	return Logger{
-		log.New(os.Stdout, "[INFO]", flags),
-		log.New(os.Stdout, "[ERROR]", flags),
-		log.New(os.Stdout, "[DEBUG]", flags),
-		log.New(os.Stdout, "[WARING]", flags),
+	//日志需要输出到哪里，标准输出是要的，输出到文件则看配置
+	var writers []io.Writer
+	writers = append(writers, os.Stdout)
+
+	if logConfig.FileWrite {
+		path := logConfig.FilePath
+		fileLogger, err := rotatelogs.New(
+			path+".%Y%m%d%H%M",
+			rotatelogs.WithLinkName(path),                                 // 生成软链，指向最新日志文件
+			rotatelogs.WithMaxAge(logConfig.FileMaxAge*time.Hour),         // 文件最大保存时间
+			rotatelogs.WithRotationTime(logConfig.RotationTime*time.Hour), // 日志切割时间间隔
+		)
+		if err != nil {
+			log.Println(err.Error())
+		}
+		writers = append(writers, fileLogger)
 	}
+	logger := NLogger{
+		log.New(io.MultiWriter(writers...), "[INFO]", flags),
+		log.New(io.MultiWriter(writers...), "[ERROR]", flags),
+		log.New(io.MultiWriter(writers...), "[DEBUG]", flags),
+		log.New(io.MultiWriter(writers...), "[WARING]", flags),
+	}
+	return logger
 }
 
-func (l *Logger) Info(v ...interface{}) {
+func (l *NLogger) Info(v ...interface{}) {
 	l.info.Output(2, fmt.Sprintln(v...))
 }
 
-func (l *Logger) Error(v ...interface{}) {
+func (l *NLogger) Infof(format string, v ...interface{}) {
+	l.info.Output(2, fmt.Sprintf(format, v...))
+}
+
+func (l *NLogger) Error(v ...interface{}) {
 	l.errors.Output(2, fmt.Sprintln(v...))
 }
 
-func (l *Logger) Debug(v ...interface{}) {
+func (l *NLogger) Debug(v ...interface{}) {
 	l.debug.Output(2, fmt.Sprintln(v...))
 }
 
-func (l *Logger) Waring(v ...interface{}) {
+func (l *NLogger) Debugf(format string, v ...interface{}) {
+	l.info.Output(2, fmt.Sprintf(format, v...))
+}
+
+func (l *NLogger) Waring(v ...interface{}) {
 	l.waring.Output(2, fmt.Sprintln(v...))
 }

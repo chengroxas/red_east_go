@@ -1,21 +1,22 @@
 package config
 
 import (
+	// "fmt"
 	"io/ioutil"
+
+	"time"
 
 	"gopkg.in/yaml.v2"
 )
 
-var (
-	Conf Config
-)
-
 type Config struct {
-	MySql MySqlConfig `yaml:"mysql"`
+	MySql   MySqlConfig   `yaml:"mysql"`
+	Logging LoggingConfig `yaml:"logging"`
 }
 
 type MySqlConfig struct {
-	ConnectTimeOut string      `yaml:"connect_time_out"`
+	ConnectTimeOut int         `yaml:"connect_time_out"`
+	Charset        string      `yaml:"charset"`
 	Main           MainConfig  `yaml:"main"`
 	Admin          AdminConfig `yaml:"admin"`
 }
@@ -25,6 +26,7 @@ type MainConfig struct {
 	Port     string `yaml:"port"`
 	UserName string `yaml:"username"`
 	Password string `yaml:"password"`
+	DataBase string `yaml:"database"`
 }
 
 type AdminConfig struct {
@@ -32,18 +34,27 @@ type AdminConfig struct {
 	Port     string `yaml:"port"`
 	UserName string `yaml:"username"`
 	Password string `yaml:"password"`
+	DataBase string `yaml:"database"`
+}
+
+type LoggingConfig struct {
+	FilePath     string        `yaml:"file_path"`
+	FileWrite    bool          `yaml:"file_write"`
+	FileMaxAge   time.Duration `yaml:"file_max_age"`
+	RotationTime time.Duration `yaml:"file_rotation_time"`
 }
 
 //初始化全部
-func InitConfig() error {
-	data, err := ioutil.ReadFile("./confi.yaml")
+func InitConfig() (Config, error) {
+	var conf Config
+	data, err := ioutil.ReadFile("./config.yaml")
 	if err != nil {
-		return err
+		return conf, err
 	}
 
-	err = yaml.Unmarshal(data, &Conf)
+	err = yaml.Unmarshal(data, &conf)
 	if err != nil {
-		return err
+		return conf, err
 	}
-	return nil
+	return conf, nil
 }
