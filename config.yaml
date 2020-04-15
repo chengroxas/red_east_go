@@ -19,3 +19,9 @@ logging:
   file_write: true   #是否写入日志中
   file_max_age: 168   #保存多少个小时
   file_rotation_time: 24   #多少小时做切割
+sign:
+  check: true
+  keys:
+    web: 12112321
+    ios: 14e2413
+    android: 4525434

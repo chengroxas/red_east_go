@@ -12,12 +12,13 @@ import (
 func CheckSign() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
-		deviceType := c.MustGet("device_type")
-		sign := c.MustGet("sign")
-		t := c.MustGet("t")
-		version := c.MustGet("version")
+		// deviceType := c.MustGet("device_type")
+		// sign := c.MustGet("sign")
+		// t := c.MustGet("t")
+		// version := c.MustGet("version")
+		signConfig := Config.Sign
 		path := c.Request.URL.Path
-		if Config.CheckSign {
+		if signConfig.Check {
 			fmt.Println(path)
 		}
 		c.Next()

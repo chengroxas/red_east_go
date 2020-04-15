@@ -19,12 +19,12 @@ func main() {
 	//初始化配置
 	Config, err = config.InitConfig()
 	if err != nil {
-		log.Fatalln("init config fail")
+		log.Fatalln("init config fail", err.Error())
 	}
 	//初始化日志
 	Logger, err = logging.InitLogger()
 	if err != nil {
-		log.Fatalln("init logger fail")
+		log.Fatalln("init logger fail", err.Error())
 	}
 
 	//初始化数据库，使用mysql

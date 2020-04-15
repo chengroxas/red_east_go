@@ -10,9 +10,16 @@ import (
 )
 
 type Config struct {
-	MySql     MySqlConfig   `yaml:"mysql"`
-	Logging   LoggingConfig `yaml:"logging"`
-	CheckSign bool          `yaml:"check_sign"`
+	MySql   MySqlConfig   `yaml:"mysql"`
+	Logging LoggingConfig `yaml:"logging"`
+	Sign    struct {
+		Check  bool `yaml:"check"`
+		AppKey struct {
+			Web     string `yaml:"web"`
+			Ios     string `yaml:"ios"`
+			Android string `yaml:"android"`
+		} `yaml:"keys"`
+	} `yaml:"sign"`
 }
 
 type MySqlConfig struct {
