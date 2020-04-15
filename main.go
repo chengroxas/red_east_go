@@ -1,6 +1,8 @@
 package main
 
 import (
+	"github.com/gin-gonic/gin"
+
 	// "fmt"
 	"red-east/config"
 
@@ -10,6 +12,7 @@ import (
 	// "reflect"
 	"red-east/dao/database"
 	"red-east/utils/logging"
+	// "github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -22,16 +25,21 @@ func Init() {
 	var err error
 	Config, err = config.InitConfig()
 	if err != nil {
-		log.Fatalln("init config false")
+		log.Fatalln("init config fail")
 	}
 	Logger = logging.InitLogger()
 	if err != nil {
-		log.Fatalln("init logger false")
+		log.Fatalln("init logger fail")
 	}
 
 	DB, err = mysql.InitMySql()
 	if err != nil {
-		Logger.Error("init database false", err.Error())
+		Logger.Error("init database fail", err.Error())
 	}
 	defer DB.Close()
+	r := gin.New()
+	r.GET("/login", func(c *gin.Context) {
+		c.JSON(200, "hwllo worj")
+	})
+	r.Run()
 }

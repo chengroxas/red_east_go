@@ -11,6 +11,10 @@ import (
 	"github.com/lestrrat-go/file-rotatelogs"
 )
 
+var (
+	FileLogger *rotatelogs.RotateLogs
+)
+
 type NLogger struct {
 	info   *log.Logger
 	errors *log.Logger
@@ -27,18 +31,12 @@ func InitLogger() NLogger {
 	var writers []io.Writer
 	writers = append(writers, os.Stdout)
 
-	if logConfig.FileWrite {
-		path := logConfig.FilePath
-		fileLogger, err := rotatelogs.New(
-			path+".%Y%m%d%H%M",
-			rotatelogs.WithLinkName(path),                                 // 生成软链，指向最新日志文件
-			rotatelogs.WithMaxAge(logConfig.FileMaxAge*time.Hour),         // 文件最大保存时间
-			rotatelogs.WithRotationTime(logConfig.RotationTime*time.Hour), // 日志切割时间间隔
-		)
-		if err != nil {
-			log.Println(err.Error())
-		}
-		writers = append(writers, fileLogger)
+	err := InitFileLogger(logConfig)
+	if err != nil {
+		log.Println("create file logger fail:", err.Error())
+	}
+	if FileLogger != nil {
+		writers = append(writers, FileLogger)
 	}
 	logger := NLogger{
 		log.New(io.MultiWriter(writers...), "[INFO]", flags),
@@ -47,6 +45,23 @@ func InitLogger() NLogger {
 		log.New(io.MultiWriter(writers...), "[WARING]", flags),
 	}
 	return logger
+}
+
+func InitFileLogger(logConfig config.LoggingConfig) (err error) {
+	if logConfig.FileWrite {
+		path := logConfig.FilePath
+		FileLogger, err = rotatelogs.New(
+			path+".%Y%m%d%H%M",
+			rotatelogs.WithLinkName(path),                                 // 生成软链，指向最新日志文件
+			rotatelogs.WithMaxAge(logConfig.FileMaxAge*time.Hour),         // 文件最大保存时间
+			rotatelogs.WithRotationTime(logConfig.RotationTime*time.Hour), // 日志切割时间间隔
+		)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+	return nil
 }
 
 func (l *NLogger) Info(v ...interface{}) {
