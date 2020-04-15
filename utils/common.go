@@ -1,9 +1,11 @@
 package common
 
 import (
+	"fmt"
 	// "fmt"
-	// "reflect"
 	"red-east/config"
+	"reflect"
+
 	// "red-east/dao/database"
 	"red-east/utils/logging"
 
@@ -15,3 +17,8 @@ var (
 	Config config.Config
 	DB     *gorm.DB
 )
+
+func GetStructFieldValue(data interface{}, field string) {
+	rs := reflect.ValueOf(data)
+	fmt.Printf("%+v", rs)
+}

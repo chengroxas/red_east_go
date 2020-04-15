@@ -46,6 +46,5 @@ func main() {
 	router.RegisterRouter(r)
 	//使用中间件，记录请求
 	Logger.Info("start application....")
-
 	r.Run()
 }
