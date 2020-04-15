@@ -16,7 +16,7 @@ type Config struct {
 		Check  bool `yaml:"check"`
 		AppKey struct {
 			Web     string `yaml:"web"`
-			Ios     string `yaml:"ios"`
+			IOS     string `yaml:"ios"`
 			Android string `yaml:"android"`
 		} `yaml:"keys"`
 	} `yaml:"sign"`
