@@ -10,8 +10,9 @@ import (
 )
 
 type Config struct {
-	MySql   MySqlConfig   `yaml:"mysql"`
-	Logging LoggingConfig `yaml:"logging"`
+	MySql     MySqlConfig   `yaml:"mysql"`
+	Logging   LoggingConfig `yaml:"logging"`
+	CheckSign bool          `yaml:"check_sign"`
 }
 
 type MySqlConfig struct {
@@ -44,7 +45,7 @@ type LoggingConfig struct {
 	RotationTime time.Duration `yaml:"file_rotation_time"`
 }
 
-//初始化全部
+//初始化配置
 func InitConfig() (Config, error) {
 	var conf Config
 	data, err := ioutil.ReadFile("./config.yaml")

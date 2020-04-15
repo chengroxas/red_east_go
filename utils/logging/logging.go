@@ -12,7 +12,8 @@ import (
 )
 
 var (
-	FileLogger *rotatelogs.RotateLogs
+	// FileLogger *rotatelogs.RotateLogs
+	Writers []io.Writer
 )
 
 type NLogger struct {
@@ -22,46 +23,56 @@ type NLogger struct {
 	waring *log.Logger
 }
 
-func InitLogger() NLogger {
+func InitLogger() (NLogger, error) {
 	//获取配置，因为在同一个utils，不能直接引用
-	conf, _ := config.InitConfig()
+	conf, err := config.InitConfig()
+	if err != nil {
+		return NLogger{}, err
+	}
 	logConfig := conf.Logging
 	flags := log.Ldate | log.LstdFlags | log.Lshortfile
 	//日志需要输出到哪里，标准输出是要的，输出到文件则看配置
-	var writers []io.Writer
-	writers = append(writers, os.Stdout)
-
-	err := InitFileLogger(logConfig)
+	err = InitWriters(logConfig)
 	if err != nil {
-		log.Println("create file logger fail:", err.Error())
-	}
-	if FileLogger != nil {
-		writers = append(writers, FileLogger)
+		return NLogger{}, err
 	}
 	logger := NLogger{
-		log.New(io.MultiWriter(writers...), "[INFO]", flags),
-		log.New(io.MultiWriter(writers...), "[ERROR]", flags),
-		log.New(io.MultiWriter(writers...), "[DEBUG]", flags),
-		log.New(io.MultiWriter(writers...), "[WARING]", flags),
+		log.New(io.MultiWriter(Writers...), "[INFO]", flags),
+		log.New(io.MultiWriter(Writers...), "[ERROR]", flags),
+		log.New(io.MultiWriter(Writers...), "[DEBUG]", flags),
+		log.New(io.MultiWriter(Writers...), "[WARING]", flags),
 	}
-	return logger
+	return logger, nil
 }
 
-func InitFileLogger(logConfig config.LoggingConfig) (err error) {
+func InitWriters(logConfig config.LoggingConfig) error {
+	Writers = append(Writers, os.Stdout)
+	fileLogger, err := initFileLogger(logConfig)
+	if err != nil {
+		log.Println("create file logger fail:", err.Error())
+		return err
+	}
+	if fileLogger != nil {
+		Writers = append(Writers, fileLogger)
+	}
+	return nil
+}
+
+func initFileLogger(logConfig config.LoggingConfig) (fileLogger *rotatelogs.RotateLogs, err error) {
 	if logConfig.FileWrite {
 		path := logConfig.FilePath
-		FileLogger, err = rotatelogs.New(
+		fileLogger, err = rotatelogs.New(
 			path+".%Y%m%d%H%M",
 			rotatelogs.WithLinkName(path),                                 // 生成软链，指向最新日志文件
 			rotatelogs.WithMaxAge(logConfig.FileMaxAge*time.Hour),         // 文件最大保存时间
 			rotatelogs.WithRotationTime(logConfig.RotationTime*time.Hour), // 日志切割时间间隔
 		)
 		if err != nil {
-			return err
+			return nil, err
 		}
-		return nil
+		return fileLogger, nil
 	}
-	return nil
+	return nil, nil
 }
 
 func (l *NLogger) Info(v ...interface{}) {

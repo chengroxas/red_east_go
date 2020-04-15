@@ -1,3 +1,4 @@
+check_sign: true
 mysql:
   connect_time_out: 10
   charset: utf8
@@ -15,6 +16,6 @@ mysql:
     password: 123456
 logging:
   file_path: /var/www/html/log/go #日志记录在哪个文件
-  file_write: false   #是否写入日志中
+  file_write: true   #是否写入日志中
   file_max_age: 168   #保存多少个小时
   file_rotation_time: 24   #多少小时做切割
