@@ -1,23 +1,24 @@
 package middleware
 
 import (
-	"fmt"
-	"red-east/controller"
-	. "red-east/utils"
 	"reflect"
 	"strconv"
 	"strings"
 	"time"
 
-	// "time"
-
 	"github.com/gin-gonic/gin"
+
+	"red-east/controller"
+	. "red-east/utils"
 )
 
 //校验签名
 func CheckSign() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
+		/*考虑到前端传值如果是弱类型语言，不会区分类型，故都是字符串传过来的值，需要其它类型的
+		 *单独做处理
+		 */
 		deviceType := c.GetString("device_type")
 		sign := c.GetString("sign")
 		t := c.GetString("t")
@@ -74,10 +75,6 @@ func CheckCommonParam() gin.HandlerFunc {
 			controller.Wrong(c, CODE_BAD_PARAM)
 			return
 		}
-		c.Set("device_type", deviceType)
-		c.Set("t", t)
-		c.Set("sign", sign)
-		c.Set("version", version)
 		c.Next()
 		//调完组件后要处理什么
 	}

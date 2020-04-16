@@ -12,6 +12,7 @@ import (
 type Config struct {
 	MySql   MySqlConfig   `yaml:"mysql"`
 	Logging LoggingConfig `yaml:"logging"`
+	Msg     MsgConfig     `yaml:"msg"`
 	Sign    struct {
 		Expire int  `yaml:"expire"`
 		Check  bool `yaml:"check"`
@@ -28,6 +29,7 @@ type MySqlConfig struct {
 	Charset        string      `yaml:"charset"`
 	Main           MainConfig  `yaml:"main"`
 	Admin          AdminConfig `yaml:"admin"`
+	Msg            MsgConfig   `yaml:"msg"`
 }
 
 type MainConfig struct {
@@ -51,6 +53,11 @@ type LoggingConfig struct {
 	FileWrite    bool          `yaml:"file_write"`
 	FileMaxAge   time.Duration `yaml:"file_max_age"`
 	RotationTime time.Duration `yaml:"file_rotation_time"`
+}
+
+type MsgConfig struct {
+	Account string `yaml:"account"`
+	Secret  string `yaml:"secret"`
 }
 
 //初始化配置
