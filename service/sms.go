@@ -3,6 +3,7 @@ package service
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	. "red-east/utils"
 )
 
@@ -59,17 +60,24 @@ func smsSaopRequest(paramJsonStr string) {
 	secretHash := Sha256ToString(Md5ToString(paramJsonStr) + smsConfig.Secret)
 	xmlTemplate = genXml(smsConfig.Account, paramJsonStr, secretHash)
 	var header = map[string]string{
-		"Authorization": genAuthorization(smsConfig.Account),
+		"Authorization": genAuthorization(smsConfig.Auth),
 	}
 	fmt.Println(header)
-	fmt.Println(xmlTemplate)
-	// Request.NewRequest("POST", "/rpc/sms/rpcserver")
+	// fmt.Println(xmlTemplate)
+	var res io.Writer
+	err := Request.Post("http://msg-api.dadi01.net/rpc/sms/rpcserver", header, []byte(xmlTemplate), res)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Println(res)
 }
 
 func genXml(account string, paramJsonStr string, secretHash string) string {
 	return fmt.Sprintf(xmlTemplate, account, paramJsonStr, secretHash)
 }
 
-func genAuthorization(account string) string {
-	return "Basic " + Base64ToString(account)
+func genAuthorization(auth string) string {
+	//php soap的Authorization加密用的是 base64(auth+":")
+	auth = auth + ":"
+	return "Basic " + Base64ToString(auth)
 }

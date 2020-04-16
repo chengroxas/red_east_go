@@ -58,6 +58,7 @@ type LoggingConfig struct {
 type MsgConfig struct {
 	Account string `yaml:"account"`
 	Secret  string `yaml:"secret"`
+	Auth    string `yaml:"auth"`
 }
 
 //初始化配置
