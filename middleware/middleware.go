@@ -5,6 +5,11 @@ import (
 	"red-east/controller"
 	. "red-east/utils"
 	"reflect"
+	"strconv"
+	"strings"
+	"time"
+
+	// "time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,18 +18,41 @@ import (
 func CheckSign() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
-		deviceType := c.MustGet("device_type")
-		// sign := c.MustGet("sign")
-		// t := c.MustGet("t")
-		// version := c.MustGet("version")
+		deviceType := c.GetString("device_type")
+		sign := c.GetString("sign")
+		t := c.GetString("t")
 		signConfig := Config.Sign
-		// path := c.Request.URL.Path
+		path := c.Request.URL.Path
 		if signConfig.Check {
 			//通过反射获取结构体AppKey里的值 deviceType IOS|Web|Andorid
 			refelctAppKey := reflect.ValueOf(signConfig.AppKey)
-			appKeyValue := refelctAppKey.FieldByName(deviceType.(string))
+			appKeyValue := refelctAppKey.FieldByName(deviceType)
 			appKey := appKeyValue.Interface().(string)
-			fmt.Println(appKey)
+			//获取时间戳
+			timeInt64, _ := strconv.ParseInt(t, 10, 64)
+			timeStamp := timeInt64 / 1000
+			nowTimeStamp := time.Now().Unix()
+			if nowTimeStamp-timeStamp > 300 {
+				controller.Wrong(c, CODE_BAD_AUTH)
+				return
+			}
+			//这样拼接效率会更快 path+deviceType+appKey+t
+			var strBuffer strings.Builder
+			strBuffer.WriteString(path)
+			strBuffer.WriteString(deviceType)
+			strBuffer.WriteString(appKey)
+			strBuffer.WriteString(t)
+			s := strBuffer.String()
+			//加密签名
+			signReal := Md5ToString(s)
+
+			signParam := strings.ToLower(sign)
+			signReal = strings.ToLower(signReal)
+			if signParam != signReal {
+				Logger.Error("客户端的签名:", signParam, "!=真实的签名", signReal)
+				controller.Wrong(c, CODE_BAD_AUTH)
+				return
+			}
 		}
 		c.Next()
 	}

@@ -4,13 +4,13 @@ mysql:
   charset: utf8
   main:
     database: redeast_main
-    dns: 192.168.1.7
+    dns: 10.11.1.90
     port: 3306
     username: root
     password: 123456
   admin:
     database: redeast_admin
-    dns: 192.168.1.7
+    dns: 10.11.1.90
     port: 3306
     username: root
     password: 123456
@@ -21,6 +21,7 @@ logging:
   file_rotation_time: 24   #多少小时做切割
 sign:
   check: true
+  expire: 300
   keys:
     web: 12112321  #前端传Web，因为被解析成结构体Web
     ios: 14e2413   #前端传IOS

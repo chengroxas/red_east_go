@@ -13,6 +13,7 @@ type Config struct {
 	MySql   MySqlConfig   `yaml:"mysql"`
 	Logging LoggingConfig `yaml:"logging"`
 	Sign    struct {
+		Expire int  `yaml:"expire"`
 		Check  bool `yaml:"check"`
 		AppKey struct {
 			Web     string `yaml:"web"`
