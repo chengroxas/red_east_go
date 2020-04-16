@@ -58,9 +58,18 @@ func smsSaopRequest(paramJsonStr string) {
 	smsConfig := Config.Msg
 	secretHash := Sha256ToString(Md5ToString(paramJsonStr) + smsConfig.Secret)
 	xmlTemplate = genXml(smsConfig.Account, paramJsonStr, secretHash)
+	var header = map[string]string{
+		"Authorization": genAuthorization(smsConfig.Account),
+	}
+	fmt.Println(header)
 	fmt.Println(xmlTemplate)
+	// Request.NewRequest("POST", "/rpc/sms/rpcserver")
 }
 
 func genXml(account string, paramJsonStr string, secretHash string) string {
 	return fmt.Sprintf(xmlTemplate, account, paramJsonStr, secretHash)
+}
+
+func genAuthorization(account string) string {
+	return "Basic " + Base64ToString(account)
 }
