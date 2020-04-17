@@ -26,8 +26,7 @@ sign:
     web: 12112321  #前端传Web，因为被解析成结构体Web
     ios: 14e2413   #前端传IOS
     android: 4525434  #前端传Android
-
 msg:
-  account: 639581001530687959952067
-  secret: B9907AFA504D77FB4C9C3448C2661BB2
+  account: 388511001533781841473815
+  secret: CBA2D9AC5E1FD65E57335D489A4511C1
   auth: "20180912dd01insiderpc-23kekd@#!"

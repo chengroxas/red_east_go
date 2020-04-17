@@ -107,11 +107,11 @@ func (request *Request) Do(method string, uri string,
 		return err
 	}
 
-	//buf := new(bytes.Buffer)
-	//buf.ReadFrom(res.Body)
-	//s := buf.String()
+	// buf := new(bytes.Buffer)
+	// buf.ReadFrom(res.Body)
+	// s := buf.String()
 	//log.Println("Beginning")
-	//log.Println(s)
+	// fmt.Println(s)
 	//log.Println("Ending")
 
 	if v != nil {
