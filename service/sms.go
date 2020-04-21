@@ -59,12 +59,20 @@ type Sms struct {
  * @return err error request会发生的错误
  **/
 func (self *Sms) SendVerCodeMsg(code string) error {
-	msg := "你的短信验证码是:123456"
-	_, err := self.senMsg(msg, "1")
+	msg := "短信验证码:" + code
+	//记录redis
+	_, err := self.sendMsg(msg, "1")
 	return err
 }
 
-func (self *Sms) senMsg(msg string, smsType string) (result MapItem, err error) {
+// /**
+//  * 校验短信验证码
+//  **/
+// func (self *Sms) CheckVerCode(code string) error {
+
+// }
+
+func (self *Sms) sendMsg(msg string, smsType string) (result MapItem, err error) {
 	params := make(map[string]interface{})
 	params["smsArea"] = "1"
 	params["smstype"] = smsType
@@ -74,7 +82,7 @@ func (self *Sms) senMsg(msg string, smsType string) (result MapItem, err error) 
 	params["project_id"] = self.CropId
 	paramJson, _ := json.Marshal(params)
 	paramJsonStr := fmt.Sprintf("%s", paramJson)
-	result, err = smsSaopRequest(paramJsonStr)
+	result, err = smsSoapRequest(paramJsonStr)
 	if err != nil {
 		// Logger.Error("发送短信请求失败")
 		return nil, errors.New("短信验证码请求失败")
@@ -94,7 +102,7 @@ func (self *Sms) senMsg(msg string, smsType string) (result MapItem, err error) 
 	return result, nil
 }
 
-func smsSaopRequest(paramJsonStr string) (mapItem MapItem, err error) {
+func smsSoapRequest(paramJsonStr string) (mapItem MapItem, err error) {
 	smsConfig := Config.Msg
 	secretHash := Sha256ToString(Md5ToString(paramJsonStr) + smsConfig.Secret)
 	xmlTemplate = genRequestXml(smsConfig.Account, paramJsonStr, secretHash)
@@ -122,7 +130,6 @@ func genAuthorization(auth string) string {
 
 func parseResponseXml(resultXml string) MapItem {
 	mapItem := make(MapItem)
-	arrayItem := []MapItem
 	doc := etree.NewDocument()
 	doc.ReadFromString(resultXml)
 	Envelope := doc.SelectElement("Envelope")
@@ -142,16 +149,16 @@ func recursiveGetElement(element *etree.Element, mapItem MapItem) {
 
 		if len(valueItems) > 0 {
 			valueType := value.SelectAttrValue("xsi:type", "ns2:Map")
+			valueItem := make(MapItem)
 			if valueType == "enc:Array" {
-				arrayMap := make(MapItem)
 				arrayDatas := []map[string]interface{}{}
 				for _, iitem := range valueItems {
-					recursiveGetElement(iitem, arrayMap)
-					arrayDatas = append(arrayDatas, arrayMap)
+					recursiveGetElement(iitem, valueItem)
+					arrayDatas = append(arrayDatas, valueItem)
 				}
 				mapItem[key] = arrayDatas
 			} else {
-				valueItem := make(MapItem)
+
 				recursiveGetElement(value, valueItem)
 				mapItem[key] = valueItem
 			}

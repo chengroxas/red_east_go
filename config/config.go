@@ -22,6 +22,7 @@ type Config struct {
 			Android string `yaml:"android"`
 		} `yaml:"keys"`
 	} `yaml:"sign"`
+	Redis RedisConfig `yaml:"redis"`
 }
 
 type MySqlConfig struct {
@@ -59,6 +60,14 @@ type MsgConfig struct {
 	Account string `yaml:"account"`
 	Secret  string `yaml:"secret"`
 	Auth    string `yaml:"auth"`
+}
+
+type RedisConfig struct {
+	Host     string `yaml:"host"`
+	Port     string `yaml:"port"`
+	Password string `yaml:"password"`
+	Db       int    `yaml:"db"`
+	Prefix   string `yaml:"prefix"`
 }
 
 //初始化配置
