@@ -4,6 +4,7 @@ import (
 	. "red-east/utils"
 )
 
+//根据配置返回缓存驱动
 var driver CacheInterface
 
 func Driver() CacheInterface {

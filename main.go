@@ -73,17 +73,15 @@ func main() {
 	}
 	defer DB.Close()
 	//初始化缓存
+	cacheDriver := cache.Driver()
 	Cache := cache.CacheImp{
-		Handle: &cache.Redis{},
+		Handle: cacheDriver,
 	}
-	Cache.InitCache()
-	Cache.SetCache("name", "xiaocheng")
-	// if err != nil {
-	// 	Logger.Error("init cache fail:", err.Error())
-	// }
-	// if Cache != nil {
-	// 	defer Cache.Close()
-	// }
+	cacheErr := Cache.InitCache()
+	if cacheErr != nil {
+		Logger.Error("init cache fail:", cacheErr.Error())
+	}
+	defer Cache.Close()
 	// 初始化gin
 	// gin输出到文件或者终端
 	gin.DefaultWriter = io.MultiWriter(logging.Writers...)
