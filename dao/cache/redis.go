@@ -1,13 +1,14 @@
 package cache
 
 import (
+	"fmt"
 	. "red-east/utils"
 
 	"github.com/go-redis/redis"
 )
 
 type Redis struct {
-	Handle *redis.Client
+	RedisHandle *redis.Client
 	CacheInterface
 }
 
@@ -22,11 +23,14 @@ func (self *Redis) Connect() error {
 	if err != nil {
 		return err
 	}
-	self.Handle = redisClient
+	self.RedisHandle = redisClient
 	return nil
 }
 
 func (self *Redis) SetCache(key string, value string) error {
-	self.Handle.Set(key, value, 0)
+	result := self.RedisHandle.Set(key, value, 0)
+	if result.Err() != nil {
+		fmt.Println(result.Err().Error())
+	}
 	return nil
 }

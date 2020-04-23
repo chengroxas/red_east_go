@@ -4,6 +4,6 @@ type Memcache struct {
 	CacheInterface
 }
 
-func (self *Memcache) Connect() {
-
+func (self *Memcache) Connect() error {
+	return nil
 }
