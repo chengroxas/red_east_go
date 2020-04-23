@@ -13,6 +13,8 @@ type Config struct {
 	MySql   MySqlConfig   `yaml:"mysql"`
 	Logging LoggingConfig `yaml:"logging"`
 	Msg     MsgConfig     `yaml:"msg"`
+	Redis   RedisConfig   `yaml:"redis"`
+	Cache   CacheConfig   `yaml:"cache"`
 	Sign    struct {
 		Expire int  `yaml:"expire"`
 		Check  bool `yaml:"check"`
@@ -22,7 +24,6 @@ type Config struct {
 			Android string `yaml:"android"`
 		} `yaml:"keys"`
 	} `yaml:"sign"`
-	Redis RedisConfig `yaml:"redis"`
 }
 
 type MySqlConfig struct {
@@ -63,6 +64,15 @@ type MsgConfig struct {
 }
 
 type RedisConfig struct {
+	Host     string `yaml:"host"`
+	Port     string `yaml:"port"`
+	Password string `yaml:"password"`
+	Db       int    `yaml:"db"`
+	Prefix   string `yaml:"prefix"`
+}
+
+type CacheConfig struct {
+	Type     string `yaml:"type"`
 	Host     string `yaml:"host"`
 	Port     string `yaml:"port"`
 	Password string `yaml:"password"`

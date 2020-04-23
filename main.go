@@ -73,13 +73,13 @@ func main() {
 	}
 	defer DB.Close()
 	//初始化缓存
-	Cache, err = cache.InitRedis()
-	if err != nil {
-		Logger.Error("init cache fail:", err.Error())
-	}
-	if Cache != nil {
-		defer Cache.Close()
-	}
+	cache.InitCache()
+	// if err != nil {
+	// 	Logger.Error("init cache fail:", err.Error())
+	// }
+	// if Cache != nil {
+	// 	defer Cache.Close()
+	// }
 	// 初始化gin
 	// gin输出到文件或者终端
 	gin.DefaultWriter = io.MultiWriter(logging.Writers...)

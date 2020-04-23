@@ -1,4 +1,4 @@
-package cache
+package redis
 
 import (
 	. "red-east/utils"
