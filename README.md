@@ -38,10 +38,12 @@ gin + mysql + redis + rotatelogs(日志处理)
 
 ### 注意事项
 
-1.配置必须第一个初始化；如果添加配置，必须修改config.go，定义相关结构体使配置生效。
+1.请开启gomodule模式，在根目录下运行go mode init，在根目录下运行go run main.go运行程序，调试时可以使用bee run，自动重新编译运行
 
-2.目前只集成redis和mysql，不支持多个数据库切换以及多个缓存或者主从配置。
+2.配置必须第一个初始化；如果添加配置，必须修改config.go，定义相关结构体使配置生效。
 
-3.日志如果不想记录到文件中，配置logging.file_write设置为false
+3.目前只集成redis和mysql，不支持多个数据库切换以及多个缓存或者主从配置。
 
-4.utils/common.go里包含Logger，Config，DB，Cache，Request;使用到这些必须import . "utils/common.go"
+4.日志如果不想记录到文件中，配置logging.file_write设置为false
+
+5.utils/common.go里包含Logger，Config，DB，Cache，Request;使用到这些必须import . "utils/common.go"
