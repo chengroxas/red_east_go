@@ -1,4 +1,4 @@
-package redis
+package cache
 
 import (
 	. "red-east/utils"
@@ -6,7 +6,12 @@ import (
 	"github.com/go-redis/redis"
 )
 
-func InitRedis() (*redis.Client, error) {
+type Redis struct {
+	Handle *redis.Client
+	CacheInterface
+}
+
+func (self *Redis) Connect() error {
 	redisConfig := Config.Redis
 	redisClient := redis.NewClient(&redis.Options{
 		Addr:     redisConfig.Host + ":" + redisConfig.Port,
@@ -15,7 +20,13 @@ func InitRedis() (*redis.Client, error) {
 	})
 	_, err := redisClient.Ping().Result()
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return redisClient, nil
+	self.Handle = redisClient
+	return nil
+}
+
+func (self *Redis) SetCache(key string, value string) error {
+	self.Handle.Set(key, value, 0)
+	return nil
 }

@@ -73,7 +73,11 @@ func main() {
 	}
 	defer DB.Close()
 	//初始化缓存
-	cache.InitCache()
+	Cache := cache.CacheImp{
+		Handle: &cache.Redis{},
+	}
+	Cache.InitCache()
+	Cache.SetCache("name", "xiaocheng")
 	// if err != nil {
 	// 	Logger.Error("init cache fail:", err.Error())
 	// }

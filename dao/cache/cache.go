@@ -1,15 +1,18 @@
 package cache
 
-import (
-	"fmt"
-	. "red-east/utils"
-)
-
-type Cache struct {
-	Handle interface{}
+type CacheImp struct {
+	Handle CacheInterface
 }
 
-func InitCache() {
-	cacheConfig := Config.Cache
-	fmt.Println(cacheConfig)
+func (self *CacheImp) InitCache() error {
+	err := self.Handle.Connect()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (self *CacheImp) SetCache(key string, value string) error {
+	self.Handle.SetCache(key, value)
+	return nil
 }
