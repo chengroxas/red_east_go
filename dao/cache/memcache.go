@@ -1,5 +1,6 @@
 package cache
 
+//todo 实现memcache
 type Memcache struct {
 	CacheInterface
 }

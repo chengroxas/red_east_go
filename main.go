@@ -1,43 +1,5 @@
 package main
 
-// import (
-// 	// "strconv"
-// 	// "strings"
-// 	"fmt"
-// 	"red-east/config"
-// 	"red-east/dao/database"
-// 	"red-east/service"
-// 	. "red-east/utils"
-
-// 	"red-east/utils/external"
-// )
-
-// func main() {
-// 	var err error
-// 	Config, err = config.InitConfig()
-// 	if err != nil {
-// 		fmt.Println(err.Error())
-// 	}
-// 	op := external.Option{
-// 		Timeout:   10,
-// 		KeepAlive: 1,
-// 		MaxIdle:   1,
-// 	}
-// 	err = Request.Init(&op)
-// 	if err != nil {
-// 		fmt.Println(err.Error())
-// 	}
-// 	sms := &service.Sms{
-// 		Mobile:      "15818359718",
-// 		CountryCode: "86",
-// 		CropId:      "0",
-// 	}
-// 	smsErr := sms.SendVerCodeMsg("123456")
-// 	if smsErr != nil {
-// 		fmt.Println(smsErr.Error())
-// 	}
-// }
-
 import (
 	"io"
 	"log"
@@ -65,7 +27,6 @@ func main() {
 	if err != nil {
 		log.Fatalln("init logger fail", err.Error())
 	}
-
 	//初始化数据库，使用mysql
 	DB, err = database.InitMySql()
 	if err != nil {
