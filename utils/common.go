@@ -2,32 +2,40 @@ package common
 
 import (
 	"fmt"
+	"github.com/gin-gonic/gin"
+	"red-east/imp"
+	"strconv"
+
 	// "fmt"
 	"crypto/md5"
 	"crypto/sha256"
 	"encoding/base64"
 	"red-east/config"
 
+	"red-east/logging"
 	"red-east/utils/external"
-	"red-east/utils/logging"
 
 	"github.com/jinzhu/gorm"
-	"red-east/minterface"
 )
 
 var (
-	Logger   logging.NLogger
-	Config   config.Config
-	DB       *gorm.DB
-	Cache    minterface.CacheInterface
-	Request  external.Request
-	Page     int
-	PageSize int
+	Logger  logging.NLogger
+	Config  config.Config
+	DB      *gorm.DB
+	Cache   imp.CacheImp
+	Request external.Request
 )
 
-//func GetPageParam() (page, pageSize int) {
-//
-//}
+func GetPageParam(c *gin.Context) (page int, pageSize int) {
+	var err error
+	page, err = strconv.Atoi(c.Query("page"))
+	pageSize, err = strconv.Atoi(c.Query("page_size"))
+	page = (page - 1) * pageSize
+	if err != nil {
+		return 0, 10
+	}
+	return page, pageSize
+}
 
 func Md5ToString(str string) string {
 	data := []byte(str)

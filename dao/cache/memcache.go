@@ -1,8 +1,6 @@
 package cache
 
-import (
-	"red-east/minterface"
-)
+import "red-east/minterface"
 
 //todo 实现memcache
 type Memcache struct {

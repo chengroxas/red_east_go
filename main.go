@@ -1,18 +1,16 @@
 package main
 
 import (
+	"github.com/gin-gonic/gin"
 	"io"
 	"log"
-
 	"red-east/config"
 	"red-east/dao/cache"
 	"red-east/dao/database"
-	"red-east/middleware"
+	"red-east/imp"
+	"red-east/logging"
 	"red-east/router"
 	. "red-east/utils"
-	"red-east/utils/logging"
-
-	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -35,10 +33,10 @@ func main() {
 	defer DB.Close()
 	//初始化缓存
 	cacheDriver := cache.Driver()
-	Cache := cache.CacheImp{
+	Cache = imp.CacheImp{
 		Handle: cacheDriver,
 	}
-	cacheErr := Cache.InitCache()
+	cacheErr := Cache.InitCache(Config, Logger)
 	if cacheErr != nil {
 		Logger.Error("init cache fail:", cacheErr.Error())
 	}
@@ -50,7 +48,7 @@ func main() {
 	gin.DisableConsoleColor()
 	r := gin.New()
 	//中间件要在路由注册之前
-	r.Use(gin.Logger(), middleware.CheckCommonParam(), middleware.CheckSign())
+	r.Use(gin.Logger())
 
 	//注册路由
 	router.RegisterRouter(r)

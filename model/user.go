@@ -21,6 +21,6 @@ func (self *UserModel) GetOneInfo(query interface{}, args ...interface{}) bool {
 func (self *UserModel) GetUserList(page, pageSize int, query interface{}, args ...interface{}) ([]*UserModel, int) {
 	var userList []*UserModel
 	var count int
-	DB.Where(query, args).Limit(pageSize).Offset(page).Find(&userList)
+	DB.Where(query, args).Offset(page).Limit(pageSize).Find(&userList)
 	return userList, count
 }

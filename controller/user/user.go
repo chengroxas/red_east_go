@@ -36,7 +36,8 @@ func (self *UserController) LoginBySms(c *gin.Context) {
 
 func (self *UserController) GetUserList(c *gin.Context) {
 	userModel := model.UserModel{}
-	userList, count := userModel.GetUserList(1, 10, "country_code = ?", "86")
+	page, pageSize := GetPageParam(c)
+	userList, count := userModel.GetUserList(page, pageSize, "country_code = ?", "86")
 	Logger.Info(userList)
 	Logger.Info("总数:", count)
 }
