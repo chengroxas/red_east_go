@@ -14,10 +14,16 @@ gin + mysql + redis + rotatelogs(日志处理)
 |		|-user.go
 |-dao						//数据层
 |	|-cache
-|		|-redis.go
+|       |-cache_driver.go //缓存的驱动
+|       |-memcache.go
+|		|-redis.go     //缓存的具体实现
 |	|-database
 |		|-database.go
 |	|-doc.go
+|-imp
+|   |-cache_imp.go   //缓存的实现
+|-minterface
+|   |-cache_interface.go //缓存的接口
 |-middleware		//中间件
 |  	|-middleware.go
 |-router					//路由

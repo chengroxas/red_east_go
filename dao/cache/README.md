@@ -15,15 +15,17 @@ memcache:
 	##memcache的配置，因为memcache少用就不做了
 ```
 
-cache目录结构
+缓存cache的实现
 
 ```go
 |--cache
-	--cahce_imp.go          cache类的实现(实际调用的是各种类型的具体实现)
-	--cache_interface.go   cache的接口
 	--driver.go						cache类的驱动
 	--memcache.go			memcache缓存的实现
 	--redis.go							redis缓存的实现
+|--imp
+    --cahce_imp.go          cache类的实现(实际调用的是各种类型的具体实现)
+|--minterface
+    --cache_interface.go   cache的接口
 ```
 
 
