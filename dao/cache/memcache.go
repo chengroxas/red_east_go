@@ -1,8 +1,12 @@
 package cache
 
+import (
+	"red-east/minterface"
+)
+
 //todo 实现memcache
 type Memcache struct {
-	CacheInterface
+	minterface.CacheInterface
 }
 
 func (self *Memcache) Connect() error {

@@ -2,6 +2,8 @@ check_sign: true
 mysql:
   connect_time_out: 10
   charset: utf8
+  debug: true
+  prefix: tab_
   main:
     database: redeast_main
     dns: 10.11.1.90

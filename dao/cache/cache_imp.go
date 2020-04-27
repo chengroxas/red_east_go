@@ -2,13 +2,14 @@ package cache
 
 // "fmt"
 import (
+	"red-east/minterface"
 	. "red-east/utils"
 	"time"
 )
 
 //缓存实现类，这里处理想要做的事情，例如加日志或者加key前缀
 type CacheImp struct {
-	Handle CacheInterface
+	Handle minterface.CacheInterface
 }
 
 func (self *CacheImp) InitCache() error {

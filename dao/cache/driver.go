@@ -1,13 +1,14 @@
 package cache
 
 import (
+	"red-east/minterface"
 	. "red-east/utils"
 )
 
 //根据配置返回缓存驱动
-var driver CacheInterface
+var driver minterface.CacheInterface
 
-func Driver() CacheInterface {
+func Driver() minterface.CacheInterface {
 	if Config.Cache.Type == "redis" {
 		driver = &Redis{}
 	} else {

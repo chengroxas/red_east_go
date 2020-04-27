@@ -11,17 +11,23 @@ import (
 	"red-east/utils/external"
 	"red-east/utils/logging"
 
-	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
+	"red-east/minterface"
 )
 
 var (
-	Logger  logging.NLogger
-	Config  config.Config
-	DB      *gorm.DB
-	Cache   *redis.Client
-	Request external.Request
+	Logger   logging.NLogger
+	Config   config.Config
+	DB       *gorm.DB
+	Cache    minterface.CacheInterface
+	Request  external.Request
+	Page     int
+	PageSize int
 )
+
+//func GetPageParam() (page, pageSize int) {
+//
+//}
 
 func Md5ToString(str string) string {
 	data := []byte(str)

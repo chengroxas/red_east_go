@@ -1,16 +1,16 @@
 package cache
 
 import (
+	"github.com/go-redis/redis"
+	"red-east/minterface"
 	. "red-east/utils"
 	"time"
-
-	"github.com/go-redis/redis"
 )
 
 //这里只需要实现redis，无需考虑别的操作，但是这里必须实现CacheInterface里的方法
 type Redis struct {
 	Handle *redis.Client
-	CacheInterface
+	minterface.CacheInterface
 }
 
 func (self *Redis) Connect() error {

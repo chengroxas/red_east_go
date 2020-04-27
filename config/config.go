@@ -3,7 +3,6 @@ package config
 import (
 	// "fmt"
 	"io/ioutil"
-
 	"time"
 
 	"gopkg.in/yaml.v2"
@@ -29,6 +28,8 @@ type Config struct {
 type MySqlConfig struct {
 	ConnectTimeOut int         `yaml:"connect_time_out"`
 	Charset        string      `yaml:"charset"`
+	Debug          string      `yaml:"debug"`
+	Prefix         string      `yaml:"prefix"`
 	Main           MainConfig  `yaml:"main"`
 	Admin          AdminConfig `yaml:"admin"`
 	Msg            MsgConfig   `yaml:"msg"`
