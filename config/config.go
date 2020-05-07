@@ -3,17 +3,20 @@ package config
 import (
 	// "fmt"
 	"io/ioutil"
-
 	"time"
 
 	"gopkg.in/yaml.v2"
 )
 
 type Config struct {
-	MySql   MySqlConfig   `yaml:"mysql"`
-	Logging LoggingConfig `yaml:"logging"`
-	Msg     MsgConfig     `yaml:"msg"`
-	Sign    struct {
+	GinMode  string         `yaml:"gin_mode"`
+	MySql    MySqlConfig    `yaml:"mysql"`
+	Logging  LoggingConfig  `yaml:"logging"`
+	Msg      MsgConfig      `yaml:"msg"`
+	Redis    RedisConfig    `yaml:"redis"`
+	Cache    CacheConfig    `yaml:"cache"`
+	Memcache MemcacheConfig `yaml:"memcache"`
+	Sign     struct {
 		Expire int  `yaml:"expire"`
 		Check  bool `yaml:"check"`
 		AppKey struct {
@@ -22,12 +25,14 @@ type Config struct {
 			Android string `yaml:"android"`
 		} `yaml:"keys"`
 	} `yaml:"sign"`
-	Redis RedisConfig `yaml:"redis"`
 }
 
 type MySqlConfig struct {
 	ConnectTimeOut int         `yaml:"connect_time_out"`
 	Charset        string      `yaml:"charset"`
+	Debug          string      `yaml:"debug"`
+	Prefix         string      `yaml:"prefix"`
+	FileWrite      string      `yaml:"file_write"`
 	Main           MainConfig  `yaml:"main"`
 	Admin          AdminConfig `yaml:"admin"`
 	Msg            MsgConfig   `yaml:"msg"`
@@ -63,6 +68,22 @@ type MsgConfig struct {
 }
 
 type RedisConfig struct {
+	Host     string `yaml:"host"`
+	Port     string `yaml:"port"`
+	Password string `yaml:"password"`
+	Db       int    `yaml:"db"`
+	Prefix   string `yaml:"prefix"`
+}
+
+type MemcacheConfig struct {
+	Host     string `yaml:"host"`
+	Port     string `yaml:"port"`
+	Password string `yaml:"password"`
+	Prefix   string `yaml:"prefix"`
+}
+
+type CacheConfig struct {
+	Type     string `yaml:"type"`
 	Host     string `yaml:"host"`
 	Port     string `yaml:"port"`
 	Password string `yaml:"password"`

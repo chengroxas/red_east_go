@@ -2,16 +2,20 @@ package common
 
 import (
 	"fmt"
+	"red-east/imp"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+
 	// "fmt"
 	"crypto/md5"
 	"crypto/sha256"
 	"encoding/base64"
 	"red-east/config"
 
+	"red-east/logging"
 	"red-east/utils/external"
-	"red-east/utils/logging"
 
-	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
 )
 
@@ -19,9 +23,20 @@ var (
 	Logger  logging.NLogger
 	Config  config.Config
 	DB      *gorm.DB
-	Cache   *redis.Client
+	Cache   imp.CacheImp
 	Request external.Request
 )
+
+func GetPageParam(c *gin.Context) (page int, pageSize int) {
+	var err error
+	page, err = strconv.Atoi(c.Query("page"))
+	pageSize, err = strconv.Atoi(c.Query("page_size"))
+	page = (page - 1) * pageSize
+	if err != nil {
+		return 0, 10
+	}
+	return page, pageSize
+}
 
 func Md5ToString(str string) string {
 	data := []byte(str)

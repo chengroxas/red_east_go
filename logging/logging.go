@@ -98,3 +98,7 @@ func (l *NLogger) Debugf(format string, v ...interface{}) {
 func (l *NLogger) Waring(v ...interface{}) {
 	l.waring.Output(2, fmt.Sprintln(v...))
 }
+
+func (l *NLogger) GetWriter() []io.Writer {
+	return Writers
+}

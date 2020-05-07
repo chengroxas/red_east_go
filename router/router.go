@@ -9,9 +9,10 @@ import (
 func RegisterRouter(r *gin.Engine) {
 	userRouter := r.Group("/user")
 	{
-		userController := &user.User{}
+		userController := &user.UserController{}
 		userRouter.POST("/bypass", userController.LoginByPass)
 		userRouter.POST("/bysms", userController.LoginBySms)
+		userRouter.GET("/userlist", userController.GetUserList)
 	}
 	// v1 := r.Group("/v1")
 	// {
