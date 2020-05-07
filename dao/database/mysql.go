@@ -14,9 +14,9 @@ func InitMySql() (*gorm.DB, error) {
 	//获取main数据库数据
 	mainConfig := mysqlConfig.Main
 
-	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
-		return mysqlConfig.Prefix + defaultTableName
-	}
+	//gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
+	//	return mysqlConfig.Prefix + defaultTableName
+	//}
 	//拼接dns
 	dns := "%s:%s@tcp(%s:%s)/%s?charset=%s&timeout=%ds"
 	dns = fmt.Sprintf(dns, mainConfig.UserName, mainConfig.Password,

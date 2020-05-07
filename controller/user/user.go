@@ -15,6 +15,17 @@ type RevLoginDataType struct {
 	Mobile string `form:"mobile" binding:"required"`
 }
 
+type ResUserList struct {
+	List []User `json:"list"`
+	Cnt  int    `json:"cnt"`
+}
+
+type User struct {
+	Id       int    `json:"id"`
+	UserId   int64  `json:"user_id"`
+	UserName string `json:"username"`
+}
+
 func (self *UserController) LoginByPass(c *gin.Context) {
 	var args RevLoginDataType
 	if err := c.ShouldBind(&args); err != nil {
@@ -36,8 +47,21 @@ func (self *UserController) LoginBySms(c *gin.Context) {
 
 func (self *UserController) GetUserList(c *gin.Context) {
 	userModel := model.UserModel{}
+	//list := new([]UserList) //使用new，当数据为空的时候，list为nil
+	list := make([]User, 0) //使用make，当数据为空的时候，list为[]
 	page, pageSize := GetPageParam(c)
-	userList, count := userModel.GetUserList(page, pageSize, "country_code = ?", "86")
-	Logger.Info(userList)
-	Logger.Info("总数:", count)
+	usersData, count := userModel.GetUserList(page, pageSize, "country_code = ?", "86")
+	for _, userData := range usersData {
+		user := &User{
+			Id:       userData.Id,
+			UserId:   userData.UserId,
+			UserName: userData.Username + "qly",
+		}
+		list = append(list, *user)
+	}
+	res := ResUserList{
+		List: list,
+		Cnt:  count,
+	}
+	self.Success(c, res)
 }
