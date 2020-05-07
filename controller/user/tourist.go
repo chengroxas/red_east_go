@@ -1,11 +1,15 @@
 package user
 
 import (
+	. "red-east/controller"
+
 	"github.com/gin-gonic/gin"
 )
 
-type Tourist struct{}
+type Tourist struct {
+	Base
+}
 
 func (this *Tourist) Login(c *gin.Context) {
-	c.JSON(200, "user tourist login")
+	Success(c, nil)
 }
