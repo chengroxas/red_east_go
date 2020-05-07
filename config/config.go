@@ -9,12 +9,14 @@ import (
 )
 
 type Config struct {
-	MySql   MySqlConfig   `yaml:"mysql"`
-	Logging LoggingConfig `yaml:"logging"`
-	Msg     MsgConfig     `yaml:"msg"`
-	Redis   RedisConfig   `yaml:"redis"`
-	Cache   CacheConfig   `yaml:"cache"`
-	Sign    struct {
+	GinMode  string         `yaml:"gin_mode"`
+	MySql    MySqlConfig    `yaml:"mysql"`
+	Logging  LoggingConfig  `yaml:"logging"`
+	Msg      MsgConfig      `yaml:"msg"`
+	Redis    RedisConfig    `yaml:"redis"`
+	Cache    CacheConfig    `yaml:"cache"`
+	Memcache MemcacheConfig `yaml:"memcache"`
+	Sign     struct {
 		Expire int  `yaml:"expire"`
 		Check  bool `yaml:"check"`
 		AppKey struct {
@@ -30,6 +32,7 @@ type MySqlConfig struct {
 	Charset        string      `yaml:"charset"`
 	Debug          string      `yaml:"debug"`
 	Prefix         string      `yaml:"prefix"`
+	FileWrite      string      `yaml:"file_write"`
 	Main           MainConfig  `yaml:"main"`
 	Admin          AdminConfig `yaml:"admin"`
 	Msg            MsgConfig   `yaml:"msg"`
@@ -69,6 +72,13 @@ type RedisConfig struct {
 	Port     string `yaml:"port"`
 	Password string `yaml:"password"`
 	Db       int    `yaml:"db"`
+	Prefix   string `yaml:"prefix"`
+}
+
+type MemcacheConfig struct {
+	Host     string `yaml:"host"`
+	Port     string `yaml:"port"`
+	Password string `yaml:"password"`
 	Prefix   string `yaml:"prefix"`
 }
 

@@ -1,8 +1,9 @@
-check_sign: true
+gin_mode: debug #release
 mysql:
   connect_time_out: 10
   charset: utf8
   debug: true
+  file_write: false
   prefix: tab_
   main:
     database: redeast_main
@@ -18,11 +19,11 @@ mysql:
     password: 123456
 logging:
   file_path: /var/www/html/log/go #日志记录在哪个文件
-  file_write: false   #是否写入到文件中
+  file_write: false #是否写入到文件中
   file_max_age: 168   #保存多少个小时
   file_rotation_time: 24   #多少小时做切割
 cache:
-  type: redis
+  type: memcache
   host: 10.11.1.90
   port: 6379
   db: 1
@@ -34,6 +35,11 @@ redis:
   db: 1
   password: 
   prefix: RED_EAST_
+memcache:
+  host: 10.11.1.90
+  port: 11211
+  prefix: RED_EAST_
+  password:
 sign:
   check: true
   expire: 300

@@ -2,10 +2,10 @@ package database
 
 import (
 	"fmt"
-	. "red-east/utils"
-
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"log"
+	. "red-east/utils"
 )
 
 func InitMySql() (*gorm.DB, error) {
@@ -25,6 +25,13 @@ func InitMySql() (*gorm.DB, error) {
 	Db, err := gorm.Open("mysql", dns)
 	if mysqlConfig.Debug == "true" {
 		Db.LogMode(true)
+		if mysqlConfig.FileWrite == "true" {
+			logger := Logger.GetWriter()
+			if len(logger) == 2 {
+				newLog := log.New(logger[1], "\r\n[DB SQL] ", 0)
+				Db.SetLogger(newLog)
+			}
+		}
 	}
 	Db.SingularTable(true)
 	return Db, err

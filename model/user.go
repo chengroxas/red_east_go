@@ -13,9 +13,9 @@ func (UserModel) TableName() string {
 	return "user"
 }
 
-func (self *UserModel) GetOneInfo(query interface{}, args ...interface{}) bool {
-	notFound := DB.Where(query, args).First(&self).RecordNotFound()
-	return notFound
+func (self *UserModel) GetOneInfo(query interface{}, args ...interface{}) (notFound bool) {
+	notFound = DB.Where(query, args).First(&self).RecordNotFound()
+	return
 }
 
 func (self *UserModel) GetUserList(page, pageSize int, query interface{}, args ...interface{}) ([]*UserModel, int) {
