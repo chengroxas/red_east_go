@@ -51,3 +51,6 @@ msg:
   account: 388511001533781841473815
   secret: CBA2D9AC5E1FD65E57335D489A4511C1
   auth: "20180912dd01insiderpc-23kekd@#!"
+nsq:
+  tcp_address: "127.0.0.1:4150"
+  lookupd_tcp_address: "127.0.0.1:4161"
