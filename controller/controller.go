@@ -8,6 +8,11 @@ import (
 
 type Base struct{}
 
+type ResponseList struct {
+	List interface{} `json:"list"`
+	Cnt  int         `json:"cnt"`
+}
+
 func (self *Base) Wrong(c *gin.Context, code int) {
 	wrong(c, code, "")
 }

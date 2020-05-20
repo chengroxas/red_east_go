@@ -10,7 +10,6 @@ import (
 
 type Memcache struct {
 	Handle *memcache.Client
-	//minterface.CacheInterface
 }
 
 func init() {

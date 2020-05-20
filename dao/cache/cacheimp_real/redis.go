@@ -8,10 +8,9 @@ import (
 )
 
 //这里只需要实现redis，无需考虑别的操作，但是这里必须实现CacheInterface里的方法
-//只要实现了minterface.CacheInterface里的方法，不需要import CacheInterface
+//只要实现了cacheinterface.CacheInterface里的方法，不需要import CacheInterface
 type Redis struct {
 	Handle *redis.Client
-	//minterface.CacheInterface
 }
 
 func init() {

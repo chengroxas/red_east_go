@@ -1,6 +1,6 @@
 ### golang demo框架
 
-gin + mysql + redis + rotatelogs(日志处理)
+gin + gorm + redis/memcache + rotatelogs(日志处理) + go-nsq(消息队列)
 
 目录结构
 
@@ -56,14 +56,17 @@ gin + mysql + redis + rotatelogs(日志处理)
 
 1.请开启gomodule模式，在根目录下运行go mode init，在根目录下运行go run main.go运行程序，调试时可以使用bee run，自动重新编译运行
 
-2.配置必须第一个初始化；如果添加配置，必须修改config.go，定义相关结构体使配置生效。
+2.开头配置一定要先初始化；配置文件在根目录下的config.yaml，如果添加新的配置，则在config/config.go中定义好结构体。
 
-3.缓存可以使用redis和memcache，可以切换。如需其它缓存，则需要在cache中编写类实现cache_interface接口，
-config.yaml里加入对应配置，config/config.go定义配置的结构体，cache_driver.go里返回相应缓存结构体。
-不支持混合使用。
+3.缓存可以使用redis和memcache，可以切换但是不能混合使用。如要添加新的缓存类型或者新的方法，查看dao/cache/README.md。
 
-4.使用的是gorm处理数据模型。
+4.orm使用gorm。
 
-5.日志如果不想记录到文件中，配置logging.file_write设置为false
+5.日志在logging目录下，使用file-rotatelogs进行文件切割。如果日志记录不想写到文件中，修改配置文件logging.file_write设置为false。
 
-6.utils/common.go里包含Logger，Config，DB，Cache，Request;使用到这些必须import . "utils/common.go"
+6.utils/common.go里定义了全局变量Logger，Config，DB，Cache，Request;在main.go中进行初始化，
+使用时，import . "utils/common.go"
+
+7.队列使用go-nsq，请提起安装好golang的nsq。
+
+8.
