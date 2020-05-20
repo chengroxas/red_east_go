@@ -1,16 +1,21 @@
-package cache
+package cache_type
 
 import (
 	"fmt"
+	"github.com/bradfitz/gomemcache/memcache"
+	"red-east/dao/cache/driver"
 	. "red-east/utils"
 	"time"
-
-	"github.com/bradfitz/gomemcache/memcache"
 )
 
 type Memcache struct {
 	Handle *memcache.Client
 	//minterface.CacheInterface
+}
+
+func init() {
+	cache := &Memcache{}
+	driver.Register("memcache", cache)
 }
 
 func (self *Memcache) Connect() error {

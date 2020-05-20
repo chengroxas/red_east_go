@@ -1,7 +1,8 @@
-package cache
+package cache_type
 
 import (
 	"github.com/go-redis/redis"
+	"red-east/dao/cache/driver"
 	. "red-east/utils"
 	"time"
 )
@@ -11,6 +12,11 @@ import (
 type Redis struct {
 	Handle *redis.Client
 	//minterface.CacheInterface
+}
+
+func init() {
+	cache := &Redis{}
+	driver.Register("redis", cache)
 }
 
 func (self *Redis) Connect() error {
