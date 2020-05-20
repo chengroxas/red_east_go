@@ -1,13 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"io"
 	"log"
 	"red-east/config"
 	"red-east/dao/cache"
+	"red-east/dao/cache/cacheimp"
 	"red-east/dao/database"
-	"red-east/imp"
 	"red-east/logging"
 	"red-east/router"
 	. "red-east/utils"
@@ -35,7 +34,7 @@ func main() {
 	defer DB.Close()
 	//初始化缓存
 	cacheDriver := cache.Driver(Config.Cache.Type)
-	Cache = imp.CacheImp{
+	Cache = cacheimp.CacheImp{
 		Handle: cacheDriver,
 	}
 	cacheErr := Cache.InitCache(Config, Logger)

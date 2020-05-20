@@ -2,7 +2,7 @@ package common
 
 import (
 	"fmt"
-	"red-east/imp"
+	"red-east/dao/cache/cacheimp"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -23,7 +23,7 @@ var (
 	Logger  logging.NLogger
 	Config  config.Config
 	DB      *gorm.DB
-	Cache   imp.CacheImp
+	Cache   cacheimp.CacheImp
 	Request external.Request
 )
 
