@@ -1,7 +1,7 @@
 package cache
 
 import (
-	_ "red-east/dao/cache/cache_type"
+	_ "red-east/dao/cache/cache_imp_real"
 	"red-east/dao/cache/driver"
 	"red-east/minterface"
 )
