@@ -1,19 +1,19 @@
 package driver
 
 import (
-	"red-east/minterface"
+	"red-east/dao/cache/cacheinterface"
 )
 
 //根据配置返回缓存驱动
 //var driver minterface.CacheInterface
 
-var driver = make(map[string]minterface.CacheInterface)
+var driver = make(map[string]cacheinterface.CacheInterface)
 
-func Register(cacheType string, cache minterface.CacheInterface) {
+func Register(cacheType string, cache cacheinterface.CacheInterface) {
 	driver[cacheType] = cache
 }
 
-func Driver(cacheType string) minterface.CacheInterface {
+func Driver(cacheType string) cacheinterface.CacheInterface {
 	if value, exist := driver[cacheType]; exist {
 		return value
 	} else {

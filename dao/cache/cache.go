@@ -1,11 +1,11 @@
 package cache
 
 import (
-	_ "red-east/dao/cache/cache_imp_real"
+	_ "red-east/dao/cache/cacheimp_real"
+	"red-east/dao/cache/cacheinterface"
 	"red-east/dao/cache/driver"
-	"red-east/minterface"
 )
 
-func Driver(cacheType string) minterface.CacheInterface {
+func Driver(cacheType string) cacheinterface.CacheInterface {
 	return driver.Driver(cacheType)
 }

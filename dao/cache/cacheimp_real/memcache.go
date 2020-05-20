@@ -1,4 +1,4 @@
-package cache_imp_real
+package cacheimp_real
 
 import (
 	"fmt"

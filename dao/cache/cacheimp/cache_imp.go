@@ -1,16 +1,16 @@
-package imp
+package cacheimp
 
 // "fmt"
 import (
 	"red-east/config"
+	"red-east/dao/cache/cacheinterface"
 	"red-east/logging"
-	"red-east/minterface"
 	"time"
 )
 
 //缓存实现类，这里处理想要做的事情，例如加日志或者加key前缀
 type CacheImp struct {
-	Handle minterface.CacheInterface
+	Handle cacheinterface.CacheInterface
 	Config config.Config
 	Logger logging.NLogger
 }

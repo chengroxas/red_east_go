@@ -1,4 +1,4 @@
-package minterface
+package cacheinterface
 
 import (
 	"time"
