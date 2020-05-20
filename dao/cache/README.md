@@ -18,23 +18,19 @@ memcache:
 缓存cache的实现
 
 ```go
-|--cache
-	--driver.go						cache类的驱动
-	--memcache.go			memcache缓存的实现
-	--redis.go							redis缓存的实现
-|--imp
-    --cahce_imp.go          cache类的实现(实际调用的是各种类型的具体实现)
-|--minterface
-    --cache_interface.go   cache的接口
+|---cache
+|  |--cacheimp             //这个cache实现业务层的逻辑
+|    |--cache_imp.go
+|  |--cacheimp_real        //只需实现第三方缓存相关功能即可
+|    |--memcache.go        
+|    |--redis.go
+|  |--cacheinterface      //cache接口，cacheimp和cacheimp_real必须实现
+|    |--cache_interface.go
+|  |--driver              //驱动，注册cache
+|    |--driver.go
+|  |--cache.go            //给外部提供Driver方法调用driver.Driver方法，避免包重复
 ```
 
-
-
-cache_interface.go里定义的是需要的接口。
-
-cache_imp.go则是实现cache_interface.go里的接口，在该实现类里做额外的处理例如加日志、给key值加前缀以及对时间的处理，不需要关心redis以及memcache的具体实现。
-
-redis.go、memcache.go则是缓存的具体实现，连接、设置、查询等，不需要做额外的处理，不需要关心别的业务逻辑。
-
-cache_interface.go里每加一种方法，cache_imp.go以及redis、memcache或者别的缓存实现里都要实现该方法。
-
+1.如果要添加新方法，cacheimp和cacheinterface，cacheimp_real里都必须实现新的方法
+2.如果添加新的缓存类型，只需要在cacheimp_real添加并且实现cacheimp里的方法，
+并且init方法里必须调用driver.Register注册到驱动中
