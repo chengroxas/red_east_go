@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"red-east/config"
@@ -33,7 +34,7 @@ func main() {
 	}
 	defer DB.Close()
 	//初始化缓存
-	cacheDriver := cache.Driver()
+	cacheDriver := cache.Driver(Config.Cache.Type)
 	Cache = imp.CacheImp{
 		Handle: cacheDriver,
 	}

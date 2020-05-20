@@ -23,7 +23,7 @@ logging:
   file_max_age: 168   #保存多少个小时
   file_rotation_time: 24   #多少小时做切割
 cache:
-  type: memcache
+  type: redis
   host: 10.11.1.90
   port: 6379
   db: 1
