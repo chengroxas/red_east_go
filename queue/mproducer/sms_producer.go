@@ -1,4 +1,4 @@
-package producer
+package mproducer
 
 import (
 	"encoding/json"
@@ -12,7 +12,7 @@ type Job struct {
 	Args interface{} `json:"args"`
 }
 
-type sendMsgArgs struct {
+type SendMsgArgs struct {
 	CountryCode string `json:"country_code"`
 	Mobile      string `json:"mobile"`
 	Msg         string `json:"msg"`
@@ -21,7 +21,7 @@ type sendMsgArgs struct {
 
 func SendVerifyCodeMsg(countryCode, mobile, code string) (bool, error) {
 	msg := fmt.Sprintf("您本次密码设置操作的验证码为：%s，有效期30分钟。", code)
-	msgArgs := sendMsgArgs{
+	msgArgs := SendMsgArgs{
 		CountryCode: countryCode,
 		Mobile:      mobile,
 		Msg:         msg,
