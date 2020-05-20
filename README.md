@@ -13,17 +13,20 @@ gin + mysql + redis + rotatelogs(日志处理)
 |		|-tourist.go
 |		|-user.go
 |-dao						//数据层
-|	|-cache
-|       |-cache_driver.go //缓存的驱动
-|       |-memcache.go
-|		|-redis.go     //缓存的具体实现
-|	|-database
-|		|-database.go
-|	|-doc.go
-|-imp
-|   |-cache_imp.go   //缓存的实现
-|-minterface
-|   |-cache_interface.go //缓存的接口
+|---cache
+|    |--cacheimp             //这个cache实现业务层的逻辑
+|      |--cache_imp.go
+|    |--cacheimp_real        //只需实现第三方缓存相关功能即可
+|      |--memcache.go        
+|      |--redis.go
+|    |--cacheinterface      //cache接口，cacheimp和cacheimp_real必须实现
+|      |--cache_interface.go
+|    |--driver              //驱动，注册cache
+|      |--driver.go 
+|    |--cache.go //给外部提供Driver方法调用driver.Driver方法，避免包重复
+|---database
+|	 |-database.go
+|  |-doc.go
 |-middleware		//中间件
 |  	|-middleware.go
 |-queue        //队列，用的nsq
