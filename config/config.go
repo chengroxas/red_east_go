@@ -3,6 +3,7 @@ package config
 import (
 	// "fmt"
 	"io/ioutil"
+	"os"
 	"time"
 
 	"gopkg.in/yaml.v2"
@@ -16,6 +17,7 @@ type Config struct {
 	Redis    RedisConfig    `yaml:"redis"`
 	Cache    CacheConfig    `yaml:"cache"`
 	Memcache MemcacheConfig `yaml:"memcache"`
+	Nsq      NsqConfig      `yaml:"nsq"`
 	Sign     struct {
 		Expire int  `yaml:"expire"`
 		Check  bool `yaml:"check"`
@@ -91,10 +93,16 @@ type CacheConfig struct {
 	Prefix   string `yaml:"prefix"`
 }
 
+type NsqConfig struct {
+	TcpAddress        string `yaml:"tcp_address"`
+	LookupdTcpAddress string `yaml:"lookupd_tcp_address"`
+}
+
 //初始化配置
 func InitConfig() (Config, error) {
 	var conf Config
-	data, err := ioutil.ReadFile("./config.yaml")
+	goPath := os.Getenv("GOPATH")
+	data, err := ioutil.ReadFile(goPath + "/src/red_east_go/config.yaml")
 	if err != nil {
 		return conf, err
 	}

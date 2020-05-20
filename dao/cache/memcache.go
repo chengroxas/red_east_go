@@ -2,17 +2,15 @@ package cache
 
 import (
 	"fmt"
-	"red-east/minterface"
 	. "red-east/utils"
 	"time"
 
 	"github.com/bradfitz/gomemcache/memcache"
 )
 
-//todo 实现memcache
 type Memcache struct {
 	Handle *memcache.Client
-	minterface.CacheInterface
+	//minterface.CacheInterface
 }
 
 func (self *Memcache) Connect() error {

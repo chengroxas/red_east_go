@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"io"
 	"log"
 	"red-east/config"
@@ -11,6 +10,8 @@ import (
 	"red-east/logging"
 	"red-east/router"
 	. "red-east/utils"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -43,6 +44,7 @@ func main() {
 	defer Cache.Close()
 	// 初始化gin
 	// gin输出到文件或者终端
+	gin.SetMode(Config.GinMode)
 	gin.DefaultWriter = io.MultiWriter(logging.Writers...)
 	//去掉颜色
 	gin.DisableConsoleColor()
