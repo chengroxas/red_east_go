@@ -3,7 +3,6 @@ package mproducer
 import (
 	"encoding/json"
 	"fmt"
-	. "red-east/queue/queue"
 	"time"
 )
 

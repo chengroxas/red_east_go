@@ -8,7 +8,6 @@ import (
 	"red-east/config"
 	"red-east/logging"
 	"red-east/queue/mconsumer"
-	. "red-east/queue/mproducer"
 	"syscall"
 	"time"
 )
@@ -65,10 +64,10 @@ func NewHandler(topic string) nsq.Handler {
 	return handler
 }
 
-func sendMessage() {
-	_, err := SendVerifyCodeMsg("86", "15818359718", "123456")
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-
-}
+//func sendMessage() {
+//	_, err := SendVerifyCodeMsg("86", "15818359718", "123456")
+//	if err != nil {
+//		fmt.Println(err.Error())
+//	}
+//
+//}

@@ -26,6 +26,13 @@ gin + mysql + redis + rotatelogs(日志处理)
 |   |-cache_interface.go //缓存的接口
 |-middleware		//中间件
 |  	|-middleware.go
+|-queue        //队列，用的nsq
+|   |-mconsumer
+|     |-sms_consumer.go //消费者
+|   |-mproducer       //生产者放到这里
+|     |-sms_producer.go  //示例
+|     |-producer.go   //nsq producer
+|   |- queue.go       //开启消费
 |-router					//路由
 |	|-router.go
 |-service					//服务
@@ -48,8 +55,12 @@ gin + mysql + redis + rotatelogs(日志处理)
 
 2.配置必须第一个初始化；如果添加配置，必须修改config.go，定义相关结构体使配置生效。
 
-3.目前只集成redis和mysql，不支持多个数据库切换以及多个缓存或者主从配置。
+3.缓存可以使用redis和memcache，可以切换。如需其它缓存，则需要在cache中编写类实现cache_interface接口，
+config.yaml里加入对应配置，config/config.go定义配置的结构体，cache_driver.go里返回相应缓存结构体。
+不支持混合使用。
 
-4.日志如果不想记录到文件中，配置logging.file_write设置为false
+4.使用的是gorm处理数据模型。
 
-5.utils/common.go里包含Logger，Config，DB，Cache，Request;使用到这些必须import . "utils/common.go"
+5.日志如果不想记录到文件中，配置logging.file_write设置为false
+
+6.utils/common.go里包含Logger，Config，DB，Cache，Request;使用到这些必须import . "utils/common.go"
